@@ -7,14 +7,18 @@ use App\Models\GeolocationLog;
 
 class GeolocationService
 {
-    public function getGeolocationData()
+    public function getGeolocationData($ipAddress = null)
     {
         try {
             $api_key = env('IPGEOLOCATION_API_KEY', "12d4c58a94ab4fd8bfee6343d668e53a");
+            $url = "https://ipgeolocation.abstractapi.com/v1/?api_key=" . $api_key;
+            if ($ipAddress) {
+                $url .= '&ip_address=' . $ipAddress;
+            }
             $curl = curl_init();
 
             curl_setopt_array($curl, [
-                CURLOPT_URL => "https://ipgeolocation.abstractapi.com/v1/?api_key=" . $api_key,
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
